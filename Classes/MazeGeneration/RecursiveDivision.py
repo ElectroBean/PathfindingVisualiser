@@ -220,7 +220,6 @@ class RecursiveDivision:
             # remove cell from stack
             self.stack.remove(current)
             current.looked_at = True
-            time.sleep(0.01)
             print("removed from stack at length: ", len(self.stack))
             pass
         print("Completed Maze")

@@ -56,6 +56,15 @@ class GridCell:
         self.F = sys.maxsize
         self.looked_at = False
 
+    def reset(self):
+        self.parent = None
+        self.G = sys.maxsize
+        self.F = sys.maxsize
+        self.looked_at = False
+        self.traversable = True
+        self.color = self.hextorgb(self.color_dict["walkable"])
+        pass
+
     def distance_to_cell(self, other):
         return abs(self.x - other.x) + abs(self.y - other.y)
 

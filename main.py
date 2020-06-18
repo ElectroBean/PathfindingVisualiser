@@ -11,9 +11,12 @@ pygame.init()
 myWindow = pygame.display.set_mode((500, 500))
 pygame.display.set_caption("Pygame window")
 myWindow.fill((138, 132, 117))
+mouse_position = None
+previous_mouse_position = None
 
 # myGrid = Grid(15, 15, 22.8, 22.8)
-myGrid = Grid(50, 45, 10, 10)
+# 500x450
+myGrid = Grid(100, 90, 5, 5)
 recursive = RecursiveDivision()
 
 start = None
@@ -36,8 +39,22 @@ def find_path():
     new_thread.start()
 
 
+def reset_grid():
+    for cell in myGrid.gridCells:
+        cell.reset()
+
+    global start
+    global end
+    start = myGrid.gridCells[0]
+    start.color = start.hextorgb(start.color_dict["origin/destination"])
+    end = myGrid.gridCells[899]
+    end.color = end.hextorgb(end.color_dict["origin/destination"])
+    pass
+
+
 buttons.append(Button(((500 / 2) - 50, 0, 100, 50), find_path, "Find Path", 30, (255, 255, 255), (204, 153, 255), (255, 0, 0)))
 buttons.append(Button(((500 - 100), 0, 100, 50), create_maze, "Create Maze", 20, (255, 255, 255), (204, 153, 255), (255, 0, 0)))
+buttons.append(Button((0, 0, 100, 50), reset_grid, "Reset Grid", 20, (255, 255, 255), (204, 153, 255), (255, 0, 0)))
 
 
 def handle_button_click(position):
@@ -46,18 +63,32 @@ def handle_button_click(position):
         pass
 
 
+def handle_mouse_move(position):
+
+    pass
+
+
 def update():
     running = True
     global start
     global end
     start = myGrid.gridCells[0]
     start.color = start.hextorgb(start.color_dict["origin/destination"])
-    end = myGrid.gridCells[224]
+    end = myGrid.gridCells[899]
     end.color = end.hextorgb(end.color_dict["origin/destination"])
     isTrue = True
     while running:
 
         pygame.time.delay(100)
+
+        global mouse_position
+        global previous_mouse_position
+        mouse_position = pygame.mouse.get_pos()
+
+        if mouse_position != previous_mouse_position:
+            # add on mouse move event
+            pass
+
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONUP:
                 handle_button_click(pygame.mouse.get_pos())
@@ -85,6 +116,7 @@ def update():
         for button in buttons:
             button.update(myWindow)
         pygame.display.update()
+        previous_mouse_position = mouse_position
 
 
 pathfinding = BestFirstSearch()
